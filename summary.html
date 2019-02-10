@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_CHTML"></script>
+</head>
+<body>
+    <h1>Equations of motion of a charged particle orbiting a charged rod</h1>
+    <h2>Description</h2>
+	<p>
+		Imagine we have a negatively charged rod with a positively charge particle in
+		orbit around it.  What are the equations of motion of the particle?
+	</p>
+
+
+    <h2>Electric potential energy</h2>
+
+	<img src="forceToPole2.svg" width="800" height="300" alt="Diagram 1"/>
+	<!-- 
+	   NOTE I'm avoiding using V here which is the common symbol for voltage / electric potential
+		as it is too easy to confused it the potential energy as used in the Lagrangian where it 
+		will be voltage TIMES charge.
+	 -->
+	<p>
+		The electric potential energy is: <br>
+			`U = k_e q  int_(-a)^a (Q d xi)  / (2 a) 1/L_xi` <br>
+            `  = (k_e Q q)/(2a) int_(-a)^a  (d xi)/sqrt(r^2 + (xi - z)^2` <br>
+            `  = (k_e Q q)/(2a) [ ln ( xi - z + sqrt(r^2 + (xi - z)^2) ) ]_(-a)^a` <br>
+
+            `  = (k_e Q q)/(2a) ln((sqrt(r^2 + (z - a)^2) - (z-a)) / (sqrt(r^2 + (z+a)^2)-(z+a)))` <BR>
+		where `q` is the charge on the particle, `Q` the charge on the electrode and `k_e` is the
+		Coulomb constant.
+    </p>
+    <p>
+		To simplify further analysis it is convenient to move to prolate spheriodal coordinates `(mu,nu,varphi)`: <br>
+            `x = a sinh mu sin nu cos varphi` <br>
+            `y = a sinh mu sin nu sin varphi` <br>
+            `z = a cosh mu cos nu` <br>
+		Also note that: <br>
+			`r = a sinh mu sin nu` <br>
+		For simplicity also define `k` as: <br>
+			`k = (k_e q Q)/(2a)`
+    </p>
+	<p>
+		Substituting these values in gives: <br>
+        `U(mu,nu) = k ln(( a cosh mu - a cos nu - (a cosh mu cos nu-a)) / (a cosh mu + a cos nu - (a cosh mu cos nu+a)))` <br>
+        `U(mu) = k ln( cosh mu + 1 ) - k ln( cosh mu - 1 ))` <br>
+    </p>
+    <p>
+        Later to solve the Euler-Lagrange we'll need the partial derivatives. `varphi` and `nu` can be ignored as they are not present.
+        Calculating the partial derivative of the potential energy with respect to `mu`: <br>
+            `(del U)/(del mu)
+            = k(sinh mu/(cosh mu + 1) - sinh mu/(cosh mu - 1) )
+            = -(2k)/(sinh mu)` 
+    </p>
+
+    <h2>Velocity term</h2>
+	<p>
+		For the analysis we require a term for kinetic energy, which requires velocity.
+        Let `u = sinh mu sin nu`. `dot x` and `dot y` are:  <br>
+            `dot x = -a dot varphi u sin varphi + a dot u cos varphi` <br>
+            `dot y =  a dot varphi u cos varphi + a dot u sin varphi` <br>
+        From this it can be seen: <br>
+            `dot x^2 + dot y^2 = a^2 dot varphi^2 u^2 + a^2 dot u^2` <br>
+        Now: <br>
+            `dot u = dot nu sinh mu cos nu + dot mu cosh mu sin nu`  <br>
+            `dot z = -a dot nu cosh mu sin nu + a dot mu sinh mu cos nu` <br>
+        From these we can see: <br>
+            `a^2 dot u^2 + dot z^2
+                = a^2 (dot mu^2 + dot nu^2) (sinh^2 mu cos^2 nu + cosh^2 mu sin^2 nu)` <br>
+            `   = a^2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu)` <br>
+
+        Now we get: <br>
+            `v^2 = dot x^2 + dot y^2 + dot z^2 =
+                a^2 dot varphi^2 sinh^2 mu sin^2 nu
+                + a^2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu)` <br>
+	</p>
+
+    <h2>Routhian</h2>
+	<p>
+		The Lagrangian is: <br>
+            `cc L(mu,dot mu,nu,dot nu,dot varphi) 
+			 = KE - PE` <br>
+            `= 1/2 m v^2  - U(mu)` <br>
+			`= 1/2m [ a^2 dot varphi^2 sinh^2 mu sin^2 nu
+                + a^2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu)  ]  - U(mu)`
+	</p>
+    <p>
+        The conjugate momentum to `varphi` is the constant: <br>
+            `p_varphi = (del cc L)/(del dot varphi) = m a^2 dot varphi sinh^2 mu sin^2 nu` <br>
+		Note that `m a^2 dot varphi sinh^2 mu sin^2 nu = m r^2 dot phi` which is the angular
+		momentum, so angular momentum in the system is conserved.
+    </p>
+    <p>
+        The Routhian can be taken to be: <br>
+            `cc R(mu,dot mu,nu, dot nu) = p_varphi dot varphi - cc L` <br>
+            `= p_varphi dot varphi
+                -(ma^2)/2 dot varphi^2 sinh^2 mu sin^2 nu
+                -(ma^2)/2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu) + U(mu)`<br>
+            `= 1/2 dot p_varphi dot varphi
+                -(ma^2)/2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu) + U(mu)`<br>
+            `= p_varphi^2/(2 m a^2 sinh^2 mu sin^2 nu)
+                -(ma^2)/2 (dot mu^2 + dot nu^2) (sinh^2 mu + sin^2 nu) + U(mu)`<br>
+    </p>
+	<h2>The Euler-Lagrange equations</h2>
+    <p>
+        The Euler-Lagrange equations derived from the Routhian are: <br>
+			`d/(d t) (del cc R)/(del dot mu) = (del cc R)/(del mu)` and 
+			`d/(d t) (del cc R)/(del dot nu) = (del cc R)/(del nu)`  <br>
+		These produce: <br>
+            `-ma^2 d/(dt) dot mu(sinh^2 mu + sin^2 nu) =
+                - (p_varphi^2 cosh mu)/(ma^2 sinh^3 mu sin^2 nu)
+                - ma^2 sinh mu cosh mu (dot mu^2 + dot nu^2)
+                - (2k)/(sinh mu)`  <br>
+
+            `-ma^2 d/(dt) dot nu (sinh^2 mu + sin^2 nu) =
+                - (p_varphi^2 cos nu)/(ma^2 sinh^2 mu sin^3 nu)
+                - ma^2 sin nu cos nu (dot mu^2 + dot nu^2)`  <br>
+    </p>
+    <p>
+        Continuing the differentiation and simplifying some terms we get: <br>
+            `ma^2 [ddot mu(sinh^2 mu+sin^2 nu) + 2 dot mu^2 sinh mu cosh mu + 2 dot mu dot nu sin nu cos nu ] =
+                  p_varphi dot varphi  cosh mu/sinh mu
+                + ma^2 sinh mu cosh mu (dot mu^2 + dot nu^2)
+                + (2k)/(sinh mu)`  <br>
+
+            `ma^2 [ddot nu(sinh^2 mu + sin^2 nu) + 2 dot nu^2 sin nu cos nu + 2 dot mu dot nu sinh mu cosh mu ] =
+                  p_varphi dot varphi  cos nu/sin nu
+                + ma^2 sin nu cos nu (dot mu^2 + dot nu^2)`  <br>
+
+        Cancelling and rearranging terms gives: <br>
+
+            `ma^2 [ddot mu(sinh^2 mu+sin^2 nu) + (dot mu^2 - dot nu^2) sinh mu cosh mu + 2 dot mu dot nu sin nu cos nu ] =
+                p_varphi dot varphi  cosh mu/sinh mu
+                + (2k)/(sinh mu)`  <br>
+
+            `ma^2 [ddot nu(sinh^2 mu + sin^2 nu) - (dot mu^2 - dot nu^2) sin nu cos nu + 2 dot mu dot nu sinh mu cosh mu ] =
+                p_varphi dot varphi  cos nu/sin nu`  <br>
+    </p>
+	<h2>Integration 1</h2>
+    <p>
+        Time to work some magic. Multiply the top equation by `dot mu`, the second equation by `dot nu`, then <i>add</i> them together.
+        Just consider the left hand side first: <br>
+            `(ddot mu dot mu sinh^2 mu + dot mu^3 sinh mu cosh mu)
+            + (ddot nu dot nu sin^2 nu + dot nu^3 sin nu cos nu)
+            + (dot mu^2 dot nu sin nu cos nu + ddot mu dot mu sin^2 nu)
+            + (dot nu^2 dot mu sinh nu cosh nu + ddot nu  dot nu sinh^2 mu)` <br>
+        This can be integrated by `t` to give: <br>
+            `1/2 dot mu^2 sinh^2 mu + 1/2 dot nu^2 sin^2 nu + 1/2 dot mu^2 sin^2 nu + 1/2 dot nu^2 sinh^2 mu + C
+			= 1/2 (dot mu^2 + dot nu^2)(sinh^2 mu + sin^2 nu) + C`
+    </p>
+    <p>
+        Next consider the right hand side of the equation: <br>
+            `p_varphi dot varphi  ( (dot mu cosh mu)/sinh mu + (dot nu cos nu)/sin nu ) + (2k dot mu)/(sinh mu)`  <br>
+            `= p_varphi^2 / (m a^2 sinh^2 mu sin^2 nu)
+                 ( (dot mu cosh mu sin nu + dot nu sinh mu cos nu)/(sinh mu sin nu) ) + (2k dot mu)/(sinh mu)`  <br>
+            `= p_varphi^2 / (m a^2)
+                 ( (dot mu cosh mu sin nu + dot nu sinh mu cos nu)/(sinh^3 mu sin^3 nu) ) + (2k dot mu)/(sinh mu)`  <br>
+        We can integrate this to get: <br>
+            `- p_varphi^2 / (2 m a^2) 1/(sinh^2 mu sin^2 nu) + 2k ln[tanh(mu/2)] + C`
+    </p>
+    <p>
+        Joining the two sides of the equation together get we: <br>
+            `m a^2 (dot mu^2 + dot nu^2)(sinh^2 mu + sin^2 nu) =
+            - p_varphi^2 / (m a^2) 1/(sinh^2 mu sin^2 nu) + 4k ln[tanh(mu/2)] + C`
+    </p>
+
+	<h2>Integration 2</h2>
+	<p>
+		I expect integration 1 has a companion, but I haven't been able to derive it yet. 
+	</p>
+    <p>
+
+	<h2>Further work</h2>
+	<p>
+		A parametric description of the motion would be handy if it is achievable.
+	</p>
